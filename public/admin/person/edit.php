@@ -1,6 +1,6 @@
 <?php
 
-require_once( '../../private/initialize.php' );
+require_once( '../../../private/initialize.php' );
 
 if ( !isset( $_GET[ 'person_id' ] ) ) {
 	redirect_to( url_for( 'admin/dashboard.php' ) );
@@ -19,9 +19,10 @@ if ( is_post_request() ) {
 	$person[ 'is_admin' ] = ( int )$_POST[ 'is_admin' ] ?? '';
 	$person[ 'is_premium' ] = ( int )$_POST[ 'is_premium' ] ?? '';
 	$person[ 'created_on' ] = date( "Y-m-d H:i:s", strtotime( $_POST[ 'created_on' ] ) ) ?? '';
-	//$person[ 'updated_on' ] = date( "Y-m-d H:i:s" );
+	$person[ 'updated_on' ] =  date( "Y-m-d H:i:s", strtotime( $_POST[ 'updated_on' ] ) ) ?? '';
 	$person[ 'birth_date' ] = date( "Y-m-d", strtotime( $_POST[ 'birth_date' ] ) ) ?? '';
 	$person[ 'profile_pic' ] = '';
+	$person[ 'biography' ] = $_POST[ 'biography' ] ?? '';
 
 	$result = update_person( $person );
 	if ( $result === true ) {
@@ -43,13 +44,15 @@ if ( is_post_request() ) {
 <head>
 	<meta charset="utf-8">
 	<title>Edit Person | MeetMe</title>
-	<link href="../css/toolkit.min.css" rel="stylesheet">
+	<link href="../../css/toolkit.min.css" rel="stylesheet">
+		<link href="../../css/styles.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 <div class="container">
+	<?php require_once('../../../private/shared/nav_admin.php'); ?>
 	<h1>Edit Person</h1>
-	<form action="person_edit.php?person_id=<?php echo h(u($person_id)); ?>" method="post" class="form-horizontal my-5">
+	<form action="edit.php?person_id=<?php echo h(u($person_id)); ?>" method="post" class="form-horizontal my-5">
 		<div class="form-group">
 			<label for="first_name" class="col-sm-2 control-label">First Name</label>
 			<div class="col-sm-10"><input name="first_name" type="text" id="first_name" value="<?php echo h($person['first_name']); ?>" class="form-control"></div>
@@ -76,6 +79,10 @@ if ( is_post_request() ) {
 			<div class="col-sm-10"><p class="help-block"><?php if(isset($errors['birth_date'])){ display_error($errors['birth_date']); } ?></p>
 		</div>
 		<div class="form-group">
+			<label for="biography" class="col-sm-2 control-label">Biography</label>
+			<div class="col-sm-10"><textarea name="biography" id="biography" class="form-control"><?php echo h($person['biography']); ?></textarea></div>
+		</div>
+		<div class="form-group">
 			<div class="checkbox my-5 col-sm-10">
 				<input type="hidden" name="is_premium" value="0" >
 				<input name="is_premium" id="is_premium" type="checkbox" value="1" <?php if($person['is_premium'] == "1"){echo "checked";} ?>> Is Premium 
@@ -94,17 +101,17 @@ if ( is_post_request() ) {
 			<div class="col-sm-10"><input name="updated_on" id="updated_on" type="text" class="form-control" readonly value="<?php echo h($person['updated_on']); ?>"></div>
 		</div>
 
-		<div class="col-sm-10"><input type="submit" value="Update" class="btn btn-lg btn-success"> <input type="button" value="Cancel" class="btn btn-lg btn-danger" onclick="location.href='dashboard.php';"></div>
+		<div class="col-sm-10"><input type="submit" value="Update" class="btn btn-lg btn-success"> <input type="button" value="Cancel" class="btn btn-lg btn-danger" onclick="location.href='../dashboard.php';"></div>
 
 	</form>
 </div>
 	<!-- Include jQuery (required) and the JS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	 <script src="../js/jquery.min.js"></script>
-    <script src="../js/popper.min.js"></script>
-    <script src="../js/chart.js"></script>
-    <script src="../js/toolkit.js"></script>
-    <script src="../js/application.js"></script>
+	 <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/chart.js"></script>
+    <script src="../../js/toolkit.js"></script>
+    <script src="../../js/application.js"></script>
 </body>
 
 </html>

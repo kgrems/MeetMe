@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../private/initialize.php');
+require_once('../../../private/initialize.php');
 
 if(!isset($_GET['person_id'])) {
   redirect_to(url_for('admin/dashboard.php'));

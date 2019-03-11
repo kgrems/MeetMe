@@ -90,18 +90,19 @@ function insert_person( $person ) {
 	}
 
 	$sql = "INSERT INTO person ";
-	$sql .= "(first_name, last_name, email, password, is_premium, created_on, updated_on, is_admin, profile_pic, birth_date) ";
+	$sql .= "(first_name, last_name, email, password, is_premium, is_admin, profile_pic, birth_date, biography) ";
 	$sql .= "VALUES (";
 	$sql .= "'" . db_escape( $db, $person[ 'first_name' ] ) . "',";
 	$sql .= "'" . db_escape( $db, $person[ 'last_name' ] ) . "',";
 	$sql .= "'" . db_escape( $db, $person[ 'email' ] ) . "',";
 	$sql .= "'" . db_escape( $db, $person[ 'password' ] ) . "',";
 	$sql .= "'" . db_escape( $db, $person[ 'is_premium' ] ) . "',";
-	$sql .= "'" . db_escape( $db, $person[ 'created_on' ] ) . "',";
-	$sql .= "'" . db_escape( $db, $person[ 'updated_on' ] ) . "',";
+	//$sql .= "'" . db_escape( $db, $person[ 'created_on' ] ) . "',";
+	//$sql .= "'" . db_escape( $db, $person[ 'updated_on' ] ) . "',";
 	$sql .= "'" . db_escape( $db, $person[ 'is_admin' ] ) . "',";
 	$sql .= "'" . db_escape( $db, $person[ 'profile_pic' ] ) . "',";
-	$sql .= "'" . db_escape( $db, $person[ 'birth_date' ] ) . "'";
+	$sql .= "'" . db_escape( $db, $person[ 'birth_date' ] ) . "',";
+	$sql .= "'" . db_escape( $db, $person[ 'biography' ] ) . "'";
 	$sql .= ")";
 	$result = mysqli_query( $db, $sql );
 	// For INSERT statements, $result is true/false
@@ -130,6 +131,7 @@ function update_person( $person ) {
 	$sql .= "password='" . db_escape($db, $person['password']) . "', ";
 	$sql .= "is_premium='" . db_escape($db, $person['is_premium']) . "', ";
 	$sql .= "birth_date='" . db_escape($db, $person['birth_date']) . "', ";
+	$sql .= "biography='" . db_escape($db, $person['biography']) . "', ";
 	$sql .= "is_admin='" . db_escape($db, $person['is_admin']) . "' ";
 	$sql .= "WHERE person_id='" . db_escape($db, $person['person_id']) . "' ";
 	$sql .= "LIMIT 1";

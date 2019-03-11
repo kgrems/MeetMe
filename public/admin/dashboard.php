@@ -10,14 +10,17 @@ $organization_set = find_all_organizations();
 	<meta charset="utf-8">
 	<title>Dashboard | MeetMe</title>
 	<link href="../css/toolkit.min.css" rel="stylesheet">
+	<link href="../css/styles.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 	<div class="container">
+		<?php require_once('../../private/shared/nav_admin.php'); ?>
+
 		<h1>Welcome</h1>
-		<h2>Administrative Tools</h2>
+		<h2>CRUD Tools</h2>
 		<h3>Users</h3>
-		<a href="person_new.php">Create Person</a>
+		<a href="person/new.php">Create Person</a>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -40,46 +43,46 @@ $organization_set = find_all_organizations();
 						<?php echo h($person['email']); ?>
 					</td>
 					<td>
-						<a href="person_view.php?person_id=<?php echo h(u($person['person_id'])); ?>">View</a> <span class="pipe">|</span>
-						<a href="person_edit.php?person_id=<?php echo h(u($person['person_id'])); ?>">Edit</a> <span class="pipe">|</span>
-						<a href="person_delete.php?person_id=<?php echo h(u($person['person_id'])); ?>">Delete</a>
+						<a href="person/view.php?person_id=<?php echo h(u($person['person_id'])); ?>">View</a> <span class="pipe">|</span>
+						<a href="person/edit.php?person_id=<?php echo h(u($person['person_id'])); ?>">Edit</a> <span class="pipe">|</span>
+						<a href="person/delete.php?person_id=<?php echo h(u($person['person_id'])); ?>">Delete</a>
+					</td>
+				</tr>
+
+				<?php } ?>
+			</tbody>
+		</table>
+		<h3>Organizations</h3>
+		<a href="organization_new.php">Create Organization</a>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Created</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php while($organization = mysqli_fetch_assoc($organization_set)) { ?>
+				<tr>
+					<td>
+						<?php echo h($organization['name']); ?>
+					</td>
+					<td>
+						<?php echo h($organization['created_on']); ?>
+					</td>
+					<td>
+						<a href="organization_view.php?person_id=<?php echo h(u($organization['organization_id'])); ?>">View</a> <span class="pipe">|</span>
+						<a href="organization_edit.php?person_id=<?php echo h(u($organization['organization_id'])); ?>">Edit</a> <span class="pipe">|</span>
+						<a href="organization_delete.php?person_id=<?php echo h(u($organization['organization_id'])); ?>">Delete
 			</td>
 		</tr>
 			
   <?php } ?>
   </tbody>
 </table>
-<h3>Organizations</h3>
-<a href="organization_new.php">Create Organization</a>
-						
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th>Created</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php while($organization = mysqli_fetch_assoc($organization_set)) { ?>
-								<tr>
-									<td>
-										<?php echo h($organization['name']); ?>
-									</td>
-									<td>
-										<?php echo h($organization['created_on']); ?>
-									</td>
-									<td>
-										<a href="organization_view.php?person_id=<?php echo h(u($organization['organization_id'])); ?>">View</a> <span class="pipe">|</span>
-										<a href="organization_edit.php?person_id=<?php echo h(u($organization['organization_id'])); ?>">Edit</a> <span class="pipe">|</span>
-										<a href="organization_delete.php?person_id=<?php echo h(u($organization['organization_id'])); ?>">Delete
-			</td>
-		</tr>
-			
-  <?php } ?>
-  </tbody>
-</table>
-<h2>User Tools</h2>
+<h2>Analytics</h2>
 	<?php mysqli_free_result($person_set); ?>
 	<?php mysqli_free_result($organization_set); ?>
 	</div>

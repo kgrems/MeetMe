@@ -1,6 +1,6 @@
 <?php
 
-require_once( '../../private/initialize.php' );
+require_once( '../../../private/initialize.php' );
 
 
 if ( is_post_request() ) {
@@ -13,10 +13,11 @@ if ( is_post_request() ) {
 	$person[ 'password' ] = $_POST[ 'password' ] ?? '';
 	$person[ 'is_admin' ] = (int) $_POST['is_admin'] ?? '';
 	$person[ 'is_premium' ] = (int) $_POST['is_premium'] ?? '';
-	$person[ 'created_on' ] = date( "Y-m-d H:i:s", strtotime($_POST['created_on'])) ?? '';
+	$person[ 'created_on' ] = date( "Y-m-d H:i:s");
 	$person[ 'updated_on' ] = date( "Y-m-d H:i:s");
 	$person[ 'birth_date'] = date("Y-m-d", strtotime($_POST['birth_date'])) ?? '';
 	$person[ 'profile_pic' ] = '';
+	$person['biography'] = $_POST['biography'] ?? '';
 
 	$result = insert_person( $person );
 	if ( $result === true ) {
@@ -39,7 +40,7 @@ if ( is_post_request() ) {
 	$person[ 'updated_on' ] = '';
 	$person[ 'profile_pic' ] = '';
 	$person[ 'birth_date' ] = '';
-
+	$person['biography'] = '';
 }
 ?>
 <!DOCTYPE html>
@@ -54,14 +55,16 @@ if ( is_post_request() ) {
 	<title>New Person | MeetMe</title>
 
 	<!-- Include the CSS -->
-	<link href="../css/toolkit.min.css" rel="stylesheet">
+	<link href="../../css/toolkit.min.css" rel="stylesheet">
+		<link href="../../css/styles.css" rel="stylesheet" type="text/css">
 
 </head>
 
 <body>
 <div class="container">
+	<?php require_once('../../../private/shared/nav_admin.php'); ?>
 	<h1>Create Person</h1>
-	<form action="person_new.php" method="post" class="form-horizontal my-5">
+	<form action="new.php" method="post" class="form-horizontal my-5">
 		<div class="form-group">
 			<label for="first_name" class="col-sm-2 control-label">First Name</label>
 			<div class="col-sm-10"><input name="first_name" type="text" id="first_name" value="<?php echo h($person['first_name']); ?>" class="form-control"></div>
@@ -82,34 +85,35 @@ if ( is_post_request() ) {
 			<div class="col-sm-10"><input name="password" type="password" id="password" value="<?php echo h($person['password']); ?>" class="form-control"></div>
 			<div class="col-sm-10"><p class="help-block"><?php if(isset($errors['password'])){ display_error($errors['password']); } ?></p></div>
 		</div>
-		<div class="form-group">
-			<div class="checkbox my-5 col-sm-10">
-				<input type="hidden" name="is_premium" value="0" >
-				<input name="is_premium" id="is_premium" type="checkbox" value="1"> Is Premium 
-				<input type="hidden" name="is_admin" value="0" />
-				<input type="checkbox" value="1" name="is_admin" id="is_admin"> Is Admin
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="created_on" class="col-sm-2 control-label">Created On</label>
-			<div class="col-sm-10"><input name="created_on" id="created_on" type="datetime-local" class="form-control"></div>
-		</div>
+
 		<div class="form-group">
 			<label for="birth_date" class="col-sm-2 control-label">Birth Date</label>
 			<div class="col-sm-10"><input name="birth_date" id="birth_date" type="date" class="form-control"></div>
 			<div class="col-sm-10"><p class="help-block"><?php if(isset($errors['birth_date'])){ display_error($errors['birth_date']); } ?></p></div>
 		</div>
-		<div class="col-sm-10"><input type="submit" value="Create" class="btn btn-lg btn-success"> <input type="button" value="Cancel" class="btn btn-lg btn-danger" onclick="location.href='dashboard.php';"></div>
+		<div class="form-group">
+			<label for="biography" class="col-sm-2 control-label">Biography</label>
+			<div class="col-sm-10"><textarea name="biography" id="biography" class="form-control"><?php echo h($person['biography']); ?></textarea></div>
+		</div>
+		<div class="form-group">
+			<div class="checkbox my-5 col-sm-10">
+				<input type="hidden" name="is_premium" value="0" >
+				<input name="is_premium" id="is_premium" type="checkbox" value="1" <?php if($person['is_premium'] == "1") { echo " checked"; } ?>> Is Premium 
+				<input type="hidden" name="is_admin" value="0" />
+				<input type="checkbox" value="1" name="is_admin" id="is_admin" <?php if($person['is_admin'] == "1") { echo " checked"; } ?>> Is Admin
+			</div>
+		</div>
+		<div class="col-sm-10"><input type="submit" value="Create" class="btn btn-lg btn-success"> <input type="button" value="Cancel" class="btn btn-lg btn-danger" onclick="location.href='../dashboard.php';"></div>
 
 	</form>
 </div>
 	<!-- Include jQuery (required) and the JS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	 <script src="../js/jquery.min.js"></script>
-    <script src="../js/popper.min.js"></script>
-    <script src="../js/chart.js"></script>
-    <script src="../js/toolkit.js"></script>
-    <script src="../js/application.js"></script>
+	 <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/chart.js"></script>
+    <script src="../../js/toolkit.js"></script>
+    <script src="../../js/application.js"></script>
 
 </body>
 
