@@ -2,6 +2,7 @@
 <?php
 $person_set = find_all_persons();
 $organization_set = find_all_organizations();
+$post_set = find_all_posts();
 ?>
 <!doctype html>
 <html>
@@ -53,7 +54,7 @@ $organization_set = find_all_organizations();
 			</tbody>
 		</table>
 		<h3>Organizations</h3>
-		<a href="organization_new.php">Create Organization</a>
+		<a href="#">Create Organization</a>
 
 		<table class="table table-striped">
 			<thead>
@@ -70,7 +71,7 @@ $organization_set = find_all_organizations();
 						<?php echo h($organization['name']); ?>
 					</td>
 					<td>
-						<?php echo h($organization['created_on']); ?>
+						<?php echo h(date("F j, Y g:i a ", strtotime($organization['created_on']))); ?>
 					</td>
 					<td>
 						<a href="organization_view.php?person_id=<?php echo h(u($organization['organization_id'])); ?>">View</a> <span class="pipe">|</span>
@@ -82,9 +83,44 @@ $organization_set = find_all_organizations();
   <?php } ?>
   </tbody>
 </table>
+<h3>Posts</h3>
+		<a href="post/new.php">Create Post</a>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Author</th>
+					<th>Datetime Posted</th>
+					<th>Content</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php while($post = mysqli_fetch_assoc($post_set)) { ?>
+				<tr>
+					<td>
+						<a href="person/view.php?person_id=<?php echo h(u($post['person_id'])); ?>"><?php echo h($post['first_name']) . " " . h($post['last_name']); ?></a>
+					</td>
+					<td>
+						<?php echo h(date("F j, Y g:i a ", strtotime($post['datetime_posted']))); ?>
+					</td>
+					<td>
+						<?php if(strlen($post['content']) > 50){ echo substr(h($post['content']), 0, 50) . "..."; }else{ echo $post['content']; } ?>
+					</td>
+					<td>
+						<a href="post/view.php?post_id=<?php echo h(u($post['post_id'])); ?>">View</a> <span class="pipe">|</span>
+						<a href="post/edit.php?post_id=<?php echo h(u($post['post_id'])); ?>">Edit</a> <span class="pipe">|</span>
+						<a href="post/delete.php?post_id=<?php echo h(u($post['post_id'])); ?>">Delete
+			</td>
+		</tr>
+			
+  <?php } ?>
+  </tbody>
+</table>
 <h2>Analytics</h2>
 	<?php mysqli_free_result($person_set); ?>
 	<?php mysqli_free_result($organization_set); ?>
+	<?php mysqli_free_result($post_set); ?>
 	</div>
 		<!-- Include jQuery (required) and the JS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

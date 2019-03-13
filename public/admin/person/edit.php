@@ -26,7 +26,6 @@ if ( is_post_request() ) {
 
 	$result = update_person( $person );
 	if ( $result === true ) {
-		$new_id = mysqli_insert_id( $db );
 		redirect_to( url_for( 'admin/dashboard.php' ) );
 	} else {
 		$errors = $result;
