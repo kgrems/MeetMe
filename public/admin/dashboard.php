@@ -18,7 +18,7 @@ $post_set = find_all_posts();
 	<div class="container">
 		<?php require_once('../../private/shared/nav_admin.php'); ?>
 
-		<h1>Welcome</h1>
+		<h1>Welcome <?php echo $_SESSION['first_name'] ?? ''; ?> <?php echo $_SESSION['last_name'] ?? ''; ?></h1>
 		<h2>CRUD Tools</h2>
 		<h3>Users</h3>
 		<a href="person/new.php">Create Person</a>

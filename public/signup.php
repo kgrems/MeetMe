@@ -55,6 +55,7 @@ if ( is_post_request() ) {
 
 	<!-- Include the CSS -->
 	<link href="css/toolkit.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
 
 </head>
 

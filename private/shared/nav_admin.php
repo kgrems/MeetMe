@@ -15,7 +15,7 @@
 						<a class="nav-link" href="<?php echo url_for('/admin/organization/new.php'); ?>">Create Organization</a>
 					</li>
 					<li class="nav-item active">
-						<a class="nav-link" href="#">Log Out</a>
+						<a class="nav-link" href="<?php echo url_for('/admin/logout.php'); ?>">Log Out</a>
 					</li>
 				</ul>
 			</div>

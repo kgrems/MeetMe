@@ -1,6 +1,4 @@
-
-
-
+<?php require_once('../private/initialize.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,8 +12,8 @@
 
     <title>
       
-        Home &middot; 
-      
+        Home | MeetMe
+
     </title>
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
@@ -71,7 +69,7 @@
         <a class="nav-link" data-toggle="modal" href="#msgModal">Messages</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="docs/index.html">Docs</a>
+        <a class="nav-link" href="logout.php">Log Out</a>
       </li>
 
       <li class="nav-item d-md-none">
@@ -402,10 +400,9 @@
           </a>
 
           <h6 class="card-title">
-            <a class="text-inherit" href="profile/index.html">Dave Gamache</a>
+            <a class="text-inherit" href="profile/index.html"><?php echo $_SESSION['first_name'] ?? ''; ?> <?php echo $_SESSION['last_name'] ?? ''; ?></a>
           </h6>
-
-          <p class="mb-4">I wish i was a little bit taller, wish i was a baller, wish i had a girl… also.</p>
+            <p class="mb-4">I wish i was a little bit taller, wish i was a baller, wish i had a girl… also.</p>
 
           <ul class="card-menu">
             <li class="card-menu-item">

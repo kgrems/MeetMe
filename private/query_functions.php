@@ -35,6 +35,31 @@ function find_posts_by_person($person_id){
 	return $result; // returns an assoc. array
 }
 
+function find_person_by_email( $email ) {
+    global $db;
+
+    $sql = "SELECT * FROM person ";
+    $sql .= "WHERE email='" . db_escape( $db, $email ) . "'";
+    $result = mysqli_query( $db, $sql );
+    confirm_result_set( $result );
+    $person = mysqli_fetch_assoc( $result );
+    mysqli_free_result( $result );
+    return $person; // returns an assoc. array
+}
+
+function find_admin_by_email( $email ) {
+    global $db;
+
+    $sql = "SELECT * FROM person ";
+    $sql .= "WHERE email='" . db_escape( $db, $email ) . "' ";
+    $sql .= "AND is_admin='1' ";
+    $result = mysqli_query( $db, $sql );
+    confirm_result_set( $result );
+    $person = mysqli_fetch_assoc( $result );
+    mysqli_free_result( $result );
+    return $person; // returns an assoc. array
+}
+
 function find_all_organizations() {
 	global $db;
 
@@ -62,8 +87,9 @@ function find_person_by_id( $person_id ) {
 function find_post_by_id( $post_id ) {
 	global $db;
 
-	$sql = "SELECT * FROM post ";
-	$sql .= "WHERE post_id='" . db_escape( $db, $post_id ) . "'";
+	$sql = "SELECT * FROM post, person ";
+	$sql .= "WHERE post_id='" . db_escape( $db, $post_id ) . "' ";
+	$sql .= "AND post.person_id=person.person_id ";
 	$result = mysqli_query( $db, $sql );
 	confirm_result_set( $result );
 	$post = mysqli_fetch_assoc( $result );
@@ -134,13 +160,15 @@ function insert_person( $person ) {
 		return $errors;
 	}
 
+	$hashed_password = password_hash($person['password'], PASSWORD_DEFAULT);
+
 	$sql = "INSERT INTO person ";
 	$sql .= "(first_name, last_name, email, password, is_premium, is_admin, profile_pic, birth_date, biography) ";
 	$sql .= "VALUES (";
 	$sql .= "'" . db_escape( $db, $person[ 'first_name' ] ) . "',";
 	$sql .= "'" . db_escape( $db, $person[ 'last_name' ] ) . "',";
 	$sql .= "'" . db_escape( $db, $person[ 'email' ] ) . "',";
-	$sql .= "'" . db_escape( $db, $person[ 'password' ] ) . "',";
+	$sql .= "'" . db_escape( $db, $hashed_password ) . "',";
 	$sql .= "'" . db_escape( $db, $person[ 'is_premium' ] ) . "',";
 	//$sql .= "'" . db_escape( $db, $person[ 'created_on' ] ) . "',";
 	//$sql .= "'" . db_escape( $db, $person[ 'updated_on' ] ) . "',";
@@ -169,11 +197,13 @@ function update_person( $person ) {
 		return $errors;
 	}
 
-	$sql = "UPDATE person SET ";
+    $hashed_password = password_hash($person['password'], PASSWORD_DEFAULT);
+
+    $sql = "UPDATE person SET ";
 	$sql .= "first_name='" . db_escape($db, $person['first_name']) . "', ";
 	$sql .= "last_name='" . db_escape($db, $person['last_name']) . "', ";
 	$sql .= "email='" . db_escape($db, $person['email']) . "', ";
-	$sql .= "password='" . db_escape($db, $person['password']) . "', ";
+	$sql .= "password='" . db_escape($db, $hashed_password) . "', ";
 	$sql .= "is_premium='" . db_escape($db, $person['is_premium']) . "', ";
 	$sql .= "birth_date='" . db_escape($db, $person['birth_date']) . "', ";
 	$sql .= "biography='" . db_escape($db, $person['biography']) . "', ";
