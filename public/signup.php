@@ -21,7 +21,7 @@ if ( is_post_request() ) {
 	$result = insert_person( $person );
 	if ( $result === true ) {
 		$new_id = mysqli_insert_id( $db );
-		redirect_to( url_for( '/home.php' ) );
+		redirect_to( url_for( '/index.php' ) );
 	} else {
 		$errors = $result;
 	}

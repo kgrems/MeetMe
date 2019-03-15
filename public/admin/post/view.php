@@ -1,4 +1,7 @@
 <?php require_once('../../../private/initialize.php'); ?> <?php
+
+require_admin_login();
+
 $post_id = $_GET[ 'post_id' ] ?? '1'; // PHP > 7.0
 
 $post = find_post_by_id( $post_id ); ?>

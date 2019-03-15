@@ -1,4 +1,7 @@
 <?php require_once('../../../private/initialize.php'); ?> <?php
+
+require_admin_login();
+
 $person_id = $_GET[ 'person_id' ] ?? '1'; // PHP > 7.0
 
 $person = find_person_by_id( $person_id ); 

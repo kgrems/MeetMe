@@ -97,8 +97,10 @@ function find_post_by_id( $post_id ) {
 	return $post; // returns an assoc. array
 }
 
-function validate_person( $person ) {
+function validate_person( $person, $options=[] ) {
 	$errors = [];
+
+	$password_required = $options['password_required'] ?? true;
 
 	// first_name
 	if ( is_blank( $person[ 'first_name' ] ) ) {
@@ -122,12 +124,14 @@ function validate_person( $person ) {
 	}
 
 	//password
-	if ( is_blank( $person[ 'password' ] ) ) {
-		$errors[ 'password' ] = "Password cannot be blank.";
-	} elseif ( !has_length( $person[ 'password' ], [ 'min' => 2, 'max' => 255 ] ) ) {
-		$errors[ 'password' ] = "Password must be between 2 and 255 characters.";
-	}
-
+    //if checks to not require a password when updating a person record
+    if($password_required) {
+        if (is_blank($person['password'])) {
+            $errors['password'] = "Password cannot be blank.";
+        } elseif (!has_length($person['password'], ['min' => 2, 'max' => 255])) {
+            $errors['password'] = "Password must be between 2 and 255 characters.";
+        }
+    }
 	//created on
 	if ( is_blank( $person[ 'created_on' ] ) ) {
 		$errors[ 'created_on' ] = "Created on cannot be blank.";
@@ -192,7 +196,9 @@ function insert_person( $person ) {
 function update_person( $person ) {
 	global $db;
 
-	$errors = validate_person( $person );
+	$password_sent = !is_blank($person['password']);
+
+	$errors = validate_person( $person, ['password_required' => $password_sent]);
 	if ( !empty( $errors ) ) {
 		return $errors;
 	}
@@ -203,7 +209,9 @@ function update_person( $person ) {
 	$sql .= "first_name='" . db_escape($db, $person['first_name']) . "', ";
 	$sql .= "last_name='" . db_escape($db, $person['last_name']) . "', ";
 	$sql .= "email='" . db_escape($db, $person['email']) . "', ";
-	$sql .= "password='" . db_escape($db, $hashed_password) . "', ";
+	if($password_sent){
+        $sql .= "password='" . db_escape($db, $hashed_password) . "', ";
+    }
 	$sql .= "is_premium='" . db_escape($db, $person['is_premium']) . "', ";
 	$sql .= "birth_date='" . db_escape($db, $person['birth_date']) . "', ";
 	$sql .= "biography='" . db_escape($db, $person['biography']) . "', ";

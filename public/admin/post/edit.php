@@ -2,6 +2,8 @@
 
 require_once( '../../../private/initialize.php' );
 
+require_admin_login();
+
 if ( !isset( $_GET[ 'post_id' ] ) ) {
 	redirect_to( url_for( 'admin/dashboard.php' ) );
 }

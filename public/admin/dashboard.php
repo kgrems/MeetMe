@@ -1,5 +1,7 @@
 <?php require_once('../../private/initialize.php'); ?> 
 <?php
+require_admin_login();
+
 $person_set = find_all_persons();
 $organization_set = find_all_organizations();
 $post_set = find_all_posts();

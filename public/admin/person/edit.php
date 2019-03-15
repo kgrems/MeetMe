@@ -1,6 +1,7 @@
 <?php
-
 require_once( '../../../private/initialize.php' );
+
+require_admin_login();
 
 if ( !isset( $_GET[ 'person_id' ] ) ) {
 	redirect_to( url_for( 'admin/dashboard.php' ) );
@@ -69,8 +70,8 @@ if ( is_post_request() ) {
 		</div>
 		<div class="form-group">
 			<label for="password" class="col-sm-2 control-label">Password</label>
-			<div class="col-sm-10"><input name="password" type="password" id="password" value="<?php echo h($person['password']); ?>" class="form-control"></div>
-			<div class="col-sm-10"><p class="help-block"><?php if(isset($errors['password'])){ display_error($errors['password']); } ?></p></div>
+			<div class="col-sm-10"><input name="password" type="password" id="password" value="<?php // echo h($person['password']); ?>" class="form-control"></div>
+			<div class="col-sm-10"><p class="help-block"><?php  if(isset($errors['password'])){ display_error($errors['password']); } ?></p></div>
 		</div>
 		<div class="form-group">
 			<label for="birth_date" class="col-sm-2 control-label">Birth Date</label>
