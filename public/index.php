@@ -66,7 +66,7 @@ if(is_post_request()){
 
 	<!-- Include jQuery (required) and the JS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	 <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/chart.js"></script>
     <script src="js/toolkit.js"></script>

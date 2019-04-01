@@ -10,7 +10,6 @@ $person_id = $_GET[ 'person_id' ];
 
 if ( is_post_request() ) {
 
-	// Handle form values sent by new.php
 	$person = [];
 	$person['person_id'] = $person_id;
 	$person[ 'first_name' ] = $_POST[ 'first_name' ] ?? '';

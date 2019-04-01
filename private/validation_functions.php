@@ -73,6 +73,21 @@ function has_exclusion_of( $value, $set ) {
 	return !in_array( $value, $set );
 }
 
+//check to see if uploaded file extension (value)
+// is in the list of acceptable extensions (set)
+// is_valid_file_extension('png', ['png', 'jpg', 'gif']
+function is_valid_file_extension($value, $set){
+    if (in_array($value, $set)) {
+        return true;
+    }
+}
+
+function is_valid_upload_size($file_size, $limit){
+    if($file_size <= $limit){
+        return true;
+    }
+}
+
 // has_string('nobody@nowhere.com', '.com')
 // * validate inclusion of character(s)
 // * strpos returns string start position or false

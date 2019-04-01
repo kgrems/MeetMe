@@ -7,6 +7,7 @@ function log_in_admin($admin){
     $_SESSION['last_name'] = $admin['last_name'];
     $_SESSION['last_login'] = time();
     $_SESSION['email'] = $admin['email'];
+    $_SESSION['profile_pic'] = $admin['profile_pic'];
     $_SESSION['is_admin'] = $admin['is_admin'];
     return true;
 }
@@ -16,6 +17,7 @@ function log_in_person($person){
     $_SESSION['person_id'] = $person['person_id'];
     $_SESSION['first_name'] = $person['first_name'];
     $_SESSION['last_name'] = $person['last_name'];
+    $_SESSION['profile_pic'] = $person['profile_pic'];
     $_SESSION['last_login'] = time();
     $_SESSION['email'] = $person['email'];
     //in case an admin was logged in, doesn't log out, and then

@@ -11,6 +11,29 @@ function find_all_persons() {
 	return $result;
 }
 
+//defaults to getting people created today
+//0 - get users created today
+//1 - get users created in past week
+//2 - get users created in past month
+function find_persons_created_on($options=0){
+    global $db;
+
+    if($options == 0) {
+        $sql = "SELECT *, DATE_FORMAT(created_on, '%Y-%m-%d') ";
+        $sql .= "FROM person ";
+        $sql .= "WHERE DATE(created_on) = CURDATE()";
+    }elseif($options == 1){
+        $sql = "SELECT * FROM person ";
+        $sql .= "WHERE YEARWEEK(created_on, 1) = YEARWEEK(CURDATE(), 1)";
+    }elseif($options == 2){
+        $sql = "SELECT * FROM person ";
+        $sql .= "WHERE YEARWEEK(created_on, 1) = YEARWEEK(CURDATE(), 1)";
+    }
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+}
+
 function find_all_posts() {
 	global $db;
 
@@ -95,6 +118,25 @@ function find_post_by_id( $post_id ) {
 	$post = mysqli_fetch_assoc( $result );
 	mysqli_free_result( $result );
 	return $post; // returns an assoc. array
+}
+
+function validate_avatar($file_data){
+    $errors = [];
+    $valid_extensions = ['jpeg','jpg','png','gif'];
+    $size_limit = 10000000;
+
+    //if(is_blank($person['profile_pic']['name'])){
+    //   $errors['file_name'] = "Avatar cannot be blank.";
+    //}
+    if(!is_valid_file_extension($file_data['extension'], $valid_extensions)){
+        $errors['file_extension'] = "Invalid file type.";
+    }
+
+    if(!is_valid_upload_size($file_data['size'], $size_limit)){
+        $errors['file_size'] = "File size must be less than or equal to " . ($size_limit / 1000 / 1000) . "MB.";
+    }
+
+    return $errors;
 }
 
 function validate_person( $person, $options=[] ) {
@@ -231,6 +273,34 @@ function update_person( $person ) {
 	}
 }
 
+function update_avatar( $person, $file_data){
+    global $db;
+
+    $errors = validate_avatar( $file_data );
+
+    if ( !empty( $errors ) ) {
+        return $errors;
+    }
+
+
+
+    $sql = "UPDATE person SET ";
+    $sql .= "profile_pic='" . db_escape($db, ltrim($file_data['path'], '/')) . "' ";
+    $sql .= "WHERE person_id='" . db_escape($db, $person['person_id']) . "' ";
+    $sql .= "LIMIT 1";
+
+    $result = mysqli_query( $db, $sql );
+    // For UPDATE statements, $result is true/false
+    if ( $result ) {
+        return true;
+    } else {
+        // UPDATE failed
+        echo mysqli_error( $db );
+        db_disconnect( $db );
+        exit;
+    }
+}
+
 function delete_person( $person_id ) {
 	global $db;
 
@@ -267,6 +337,26 @@ function delete_post( $post_id ) {
 		db_disconnect( $db );
 		exit;
 	}
+}
+
+function delete_post_by_post_id_and_person_id( $post_id, $person_id ) {
+    global $db;
+
+    $sql = "DELETE FROM post ";
+    $sql .= "WHERE post_id='" . db_escape( $db, $post_id ) . "' ";
+    $sql .= "AND person_id='" . db_escape($db, $person_id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query( $db, $sql );
+
+    // For DELETE statements, $result is true/false
+    if ( $result ) {
+        return true;
+    } else {
+        // DELETE failed
+        echo mysqli_error( $db );
+        db_disconnect( $db );
+        exit;
+    }
 }
 
 function insert_post( $post ) {
@@ -320,4 +410,5 @@ function update_post( $post ) {
 		exit;
 	}
 }
+
 ?>

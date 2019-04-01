@@ -6,5 +6,6 @@ unset($_SESSION['first_name']);
 unset($_SESSION['last_name']);
 unset($_SESSION['last_login']);
 unset($_SESSION['is_admin']);
+unset($_SESSION['profile_pic']);
 redirect_to(url_for('admin/index.php'));
 ?>
